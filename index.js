@@ -1,6 +1,6 @@
 const { writeFile, readFile, readFileSync } = require('fs');
 const pathJSON = './data/posts.json';
-function appendToJson(object){
+function appendToJson(object){//funzione per fare il push sull'array di messaggi nel JSON
   readFile(pathJSON, (error, data) => {
     if (error) {return;}
     var parsedData = JSON.parse(data);
@@ -18,7 +18,7 @@ function appendToJson(object){
     });
   });
 }
-function readJson() {
+function readJson() {//funzione che restituisce il file JSON
   return JSON.parse(readFileSync(pathJSON, 'utf8', (error, data) => {
     if (error) {
       return null;
@@ -33,16 +33,15 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded()); 
 app.set('views', path.join(__dirname, './pages'))
 app.use(express.static(path.join(__dirname, 'public')));
-app.get('/', (req, res)=> {
+app.get('/', (req, res)=> {//pagina di visualizzazione messaggi
   let data = readJson()
   res.render('home',{data:data});
 });
-app.get('/postIt', (req, res)=> {
+app.get('/postIt', (req, res)=> {//pagina FORM messaggio
   res.render('postIt');
 });
-app.post('/home', (req, res)=> {
+app.post('/home', (req, res)=> {//pagina di verifica e visualizzazione messaggi
   let data = readJson()
-  console.log(data)
   username =  req.body.username
   text =  req.body.text
   appendToJson({'nome': username,'messaggio':text})
